@@ -2,8 +2,6 @@ from pyexpat import model
 from django.db import models
 
 # Create your models here.
-from django.contrib.auth.models import User
-from django.forms import CharField
 
 LOCAL_BODY_CHOICES = (
     # Panchayath levels
@@ -164,7 +162,7 @@ class VisitSchedule(models.Model):
     # minutes
     duration = models.IntegerField()
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
-    nurse = models.ForeignKey(User, on_delete=models.PROTECT)
+    nurse = models.ForeignKey("Users", on_delete=models.PROTECT)
 
 
 PALLIVATIVE_PHASE_CHOICES = (

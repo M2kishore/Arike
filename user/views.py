@@ -1,12 +1,13 @@
+from re import template
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import CreateView
 
-from django.contrib.auth.forms import UserCreationForm
-
 from django.forms import ModelForm
+
+from user.models import Users
 
 # Create your views here.
 class HomeView(View):
@@ -14,11 +15,21 @@ class HomeView(View):
         return render(request, "base.html")
 
 
+class UserLoginForm(ModelForm):
+    pass
+
+
 class UserLoginView(LoginView):
-    template_name = "login.html"
+    pass
 
 
-class UserSignupView(CreateView):
-    form_class = UserCreationForm
+class UserCreateForm(ModelForm):
+    class Meta:
+        model = Users
+        fields = ("full_name", "role", "email", "phone", "password")
+
+
+class GenericUserCreateView(CreateView):
+    form_class = UserCreateForm
     template_name = "signup.html"
-    success_url = "/login"
+    success_url = "dashboard/"
