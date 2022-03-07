@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {%block heading%} Authorized Login {%endblock%} 
+{%block content %}
+<div
+  class="mx-5 block p-6 rounded-lg shadow-lg bg-white max-w-sm place-self-center"
+  <form action="" method="post">
+    <div class="form-group mb-6">
+        <div class="text-red-700">{{ form.username.errors }}</div>
+      <label
+        for="{{ form.username.id_for_label }}"
+        class="form-label inline-block mb-2 text-gray-700"
+        >Username</label
+      >
+      <div
+        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      >
+        {{form.username}}
+      </div>
+    </div>
+    <div class="form-group mb-6">
+      <label
+        for="{{ form.password1.id_for_label }}"
+        class="form-label inline-block mb-2 text-gray-700"
+        >Password</label
+      >
+      <div
+        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      >
+        {{form.password1}}
+      </div>
+    </div>
+    <div class="text-red-700">{{ form.password2.errors }}<div>
+    <div class="form-group mb-6">
+        <label
+          for="{{ form.password2.id_for_label }}"
+          class="form-label inline-block mb-2 text-gray-700"
+          >Retype Password</label
+        >
+        <div
+          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        >
+          {{form.password2}}
+        </div>
+      </div>
+      <p class="text-gray-500">
+        <ul class="text-gray-500">
+          <li class="list-disc">Your password can’t be too similar to your other personal information.</li>
+          <li class="list-disc">Your password must contain at least 8 characters.</li>
+          <li class="list-disc">Your password can’t be a commonly used password.</li>
+          <li class="list-disc">Your password can’t be entirely numeric.</li>
+        </ul>
+      </p>
+    {% csrf_token %}
+    <button
+      type="submit"
+      class="w-full px-6 py-2.5 bg-stone-700 text-white font-medium text-xs uppercase rounded shadow-md hover:bg-stone-800 hover:shadow-lg focus:bg-stone-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+    >
+      Signup
+    </button>
+  </form>
+</div>
+{% endblock %}
