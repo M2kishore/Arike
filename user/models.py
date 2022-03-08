@@ -1,6 +1,7 @@
 from pyexpat import model
 from django.db import models
-
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 LOCAL_BODY_CHOICES = (
@@ -68,18 +69,40 @@ USERS_ROLE_CHOICES = (
     ("district_admin", "district_admin"),
 )
 
+class AccountManager(BaseUserManager):
+    def create_user(self,email,full_name,role,phone,password,**other_fields):
+        
+        if not email:
+            raise ValueError(_("Enter emanil address"))
 
-class Users(models.Model):
+        email = self.normalize_email(email)
+        user = self.model(email=email,full_name=full_name,role=role,phone=phone)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self,email,full_name,role,phone,password,**other_fields):
+        user = self.create_user(email,full_name,"district_admin",phone,password,**other_fields)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+class User(AbstractBaseUser,PermissionsMixin):
+    email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=100)
     role = models.CharField(
         max_length=15,
         choices=USERS_ROLE_CHOICES,
         default=USERS_ROLE_CHOICES[0][0],
     )
-    email = models.EmailField(max_length=100)
-    phone = models.IntegerField()
+    phone = models.IntegerField(unique=True)
     is_verified = models.BooleanField(default=False)
-    password = models.CharField(max_length=255)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    objects = AccountManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['full_name','role','phone']
 
 
 GENDER_CHOICES = (("Male", "Male"), ("Female", "Female"), (3, "Non_Binary"))
@@ -162,7 +185,7 @@ class VisitSchedule(models.Model):
     # minutes
     duration = models.IntegerField()
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
-    nurse = models.ForeignKey("Users", on_delete=models.PROTECT)
+    nurse = models.ForeignKey("User", on_delete=models.PROTECT)
 
 
 PALLIVATIVE_PHASE_CHOICES = (

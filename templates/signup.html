@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {%block heading%} Authorized Login {%endblock%} 
+<!-- {%block heading%} Authorized Login {%endblock%}
 {%block content %}
 <div
   class="mx-5 block p-6 rounded-lg shadow-lg bg-white max-w-sm place-self-center"
@@ -16,7 +16,7 @@
         {{form.username}}
       </div>
     </div>
-    <div class="form-group mb-6">
+      <div class="form-group mb-6">
       <label
         for="{{ form.password1.id_for_label }}"
         class="form-label inline-block mb-2 text-gray-700"
@@ -57,5 +57,9 @@
       Signup
     </button>
   </form>
-</div>
+</div> -->
+<form action="" method="post">
+  {{form.as_p}}{% csrf_token %}
+  <button type="submit">submit</button>
+</form>
 {% endblock %}
