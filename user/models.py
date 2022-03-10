@@ -1,6 +1,6 @@
 from pyexpat import model
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
@@ -73,7 +73,7 @@ class AccountManager(BaseUserManager):
     def create_user(self,email,full_name,role,phone,password,**other_fields):
         
         if not email:
-            raise ValueError(_("Enter emanil address"))
+            raise ValueError(_("Enter email address"))
 
         email = self.normalize_email(email)
         user = self.model(email=email,full_name=full_name,role=role,phone=phone)
@@ -87,7 +87,7 @@ class AccountManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-class User(AbstractBaseUser,PermissionsMixin):
+class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=100)
     role = models.CharField(
@@ -99,7 +99,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    objects = AccountManager()
+    #objects = AccountManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['full_name','role','phone']
