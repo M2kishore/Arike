@@ -1,0 +1,9 @@
+<h1>Diseases</h1>
+{%if not diseases%}
+no objects
+{%endif%}
+{% for disease in diseases%}
+{{forloop.counter}}
+{{disease}} <a href="/disease-delete/{{disease.id}}">remove</a> <a href="/update-disease/{{disease.id}}">update</a> <a
+    href="/disease-detail/{{disease.id}}">details</a><br />
+{% endfor %}

@@ -1,0 +1,9 @@
+<h1>Facility</h1>
+{%if not facilitys%}
+no objects
+{%endif%}
+{% for facility in facilities%}
+{{forloop.counter}}
+{{facility}} <a href="/facility-delete/{{facility.id}}">remove</a> <a href="/update-facility/{{facility.id}}">update</a>
+<a href="/facility-detail/{{facility.id}}">details</a><br />
+{% endfor %}

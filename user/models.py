@@ -35,7 +35,7 @@ class LgsBody(models.Model):
     kind = models.CharField(
         max_length=100, choices=LOCAL_BODY_CHOICES, default=LOCAL_BODY_CHOICES[0][0]
     )
-    lsg_body_code = models.CharField(max_length=20, blank=True, null=True)
+    lgs_body_code = models.CharField(max_length=20, blank=True, null=True)
 
     district = models.ForeignKey("District", on_delete=models.PROTECT)
 

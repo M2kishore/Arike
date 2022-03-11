@@ -1,12 +1,9 @@
-<ul>
-    <!-- Iterate over object_list -->
-    {% for patient in patients %}
-    <!-- Display Objects -->
-    <li>{{ patient.full_name }}</li>
-
-    <hr />
-    <!-- If object_list is empty  -->
-    {% empty %}
-    <li>No objects yet.</li>
-    {% endfor %}
-</ul>
+<h1>Patient</h1>
+{%if not patients%}
+no objects
+{%endif%}
+{% for patient in patients%}
+{{forloop.counter}}
+{{patient}} <a href="/patient-delete/{{patient.id}}">remove</a> <a href="/update-patient/{{patient.id}}">update</a> <a
+    href="/patient-detail/{{patient.id}}">details</a><br />
+{% endfor %}

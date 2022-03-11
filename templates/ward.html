@@ -1,0 +1,9 @@
+<h1>Ward</h1>
+{%if not wards%}
+no objects
+{%endif%}
+{% for ward in wards%}
+{{forloop.counter}}
+{{ward}} <a href="/ward-delete/{{ward.id}}">remove</a> <a href="/update-ward/{{ward.id}}">update</a> <a
+    href="/ward-detail/{{ward.id}}">details</a><br />
+{% endfor %}

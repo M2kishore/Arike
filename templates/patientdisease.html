@@ -1,0 +1,10 @@
+<h1>patientdisease</h1>
+{%if not patientdiseases%}
+no objects
+{%endif%}
+{% for patientdisease in patientdiseases%}
+{{forloop.counter}}
+{{patientdisease}} <a href="/patientdisease-delete/{{patientdisease.id}}">remove</a> <a
+    href="/update-patientdisease/{{patientdisease.id}}">update</a> <a
+    href="/patientdisease-detail/{{patientdisease.id}}">details</a><br />
+{% endfor %}
