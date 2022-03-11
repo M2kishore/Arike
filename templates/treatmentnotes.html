@@ -1,0 +1,10 @@
+<h1>Treatment Notes</h1>
+{%if not treatmentnotess%}
+no objects
+{%endif%}
+{% for treatmentnotes in treatmentnotess%}
+{{forloop.counter}}
+{{treatmentnotes}} <a href="/treatmentnotes-delete/{{treatmentnotes.id}}">remove</a> <a
+    href="/treatmentnotes-update/{{treatmentnotes.id}}">update</a> <a
+    href="/treatmentnotes-detail/{{treatmentnotes.id}}">details</a><br />
+{% endfor %}

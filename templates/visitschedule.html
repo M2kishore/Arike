@@ -1,0 +1,10 @@
+<h1>visitschedule</h1>
+{%if not visitschedules%}
+no objects
+{%endif%}
+{% for visitschedule in visitschedules%}
+{{forloop.counter}}
+{{visitschedule}} <a href="/visitschedule-delete/{{visitschedule.id}}">remove</a> <a
+    href="/visitschedule-update/{{visitschedule.id}}">update</a> <a
+    href="/visitschedule-detail/{{visitschedule.id}}">details</a><br />
+{% endfor %}

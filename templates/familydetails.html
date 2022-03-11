@@ -5,6 +5,6 @@ no objects
 {% for familydetail in familydetails%}
 {{forloop.counter}}
 {{familydetail}} <a href="/familydetail-delete/{{familydetail.id}}">remove</a> <a
-    href="/update-familydetail/{{familydetail.id}}">update</a> <a
+    href="/familydetail-update/{{familydetail.id}}">update</a> <a
     href="/familydetail-detail/{{familydetail.id}}">details</a><br />
 {% endfor %}

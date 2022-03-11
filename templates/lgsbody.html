@@ -4,6 +4,6 @@ no objects
 {%endif%}
 {% for lgsbody in lgsbodies%}
 {{forloop.counter}}
-{{lgsbody}} <a href="/lgsbody-delete/{{lgsbody.id}}">remove</a> <a href="/update-lgsbody/{{lgsbody.id}}">update</a> <a
+{{lgsbody}} <a href="/lgsbody-delete/{{lgsbody.id}}">remove</a> <a href="/lgsbody-update/{{lgsbody.id}}">update</a> <a
     href="/lgsbody-detail/{{lgsbody.id}}">details</a><br />
 {% endfor %}

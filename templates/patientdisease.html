@@ -5,6 +5,6 @@ no objects
 {% for patientdisease in patientdiseases%}
 {{forloop.counter}}
 {{patientdisease}} <a href="/patientdisease-delete/{{patientdisease.id}}">remove</a> <a
-    href="/update-patientdisease/{{patientdisease.id}}">update</a> <a
+    href="/patientdisease-update/{{patientdisease.id}}">update</a> <a
     href="/patientdisease-detail/{{patientdisease.id}}">details</a><br />
 {% endfor %}

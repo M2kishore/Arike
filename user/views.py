@@ -12,8 +12,13 @@ from user.models import (
     FamilyDetails,
     LgsBody,
     Patient,
+    PatientDisease,
     State,
+    Treatment,
+    TreatmentNotes,
     User,
+    VisitDetails,
+    VisitSchedule,
     Ward,
 )
 from django.contrib.auth.views import LoginView
@@ -45,7 +50,7 @@ class UserCreateForm(UserCreationForm):
 class UserCreateView(CreateView):
     form_class = UserCreateForm
     template_name = "signup.html"
-    success_url = "dashboard/"
+    success_url = "login"
 
 
 class UserLoginForm(forms.Form):
@@ -56,7 +61,7 @@ class UserLoginForm(forms.Form):
 def log_in(request):
     error = False
     if request.user.is_authenticated:
-        return redirect("home")
+        return redirect("/patient")
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -65,7 +70,7 @@ def log_in(request):
             user = authenticate(email=email, password=password)
             if user:
                 login(request, user)
-                return redirect("dashboard")
+                return redirect("login")
             else:
                 error = True
     else:
@@ -229,7 +234,7 @@ class LgsBodyForm(ModelForm):
 class LgsBodyView(ListView):
     queryset = LgsBody.objects.all()
     template_name = "lgsbody.html"
-    context_object_name = "lgsbodys"
+    context_object_name = "lgsbodies"
 
 
 class CreateLgsBodyView(CreateView):
@@ -430,5 +435,197 @@ class DetailDiseaseView(DetailView):
     model = Disease
     template_name = "disease-details.html"
 
+#Patient Disease
+class PatientDiseaseForm(ModelForm):
+    class Meta:
+        model = PatientDisease
+        fields = "__all__"
+
+
+class PatientDiseaseView(ListView):
+    queryset = PatientDisease.objects.all()
+    template_name = "patientdisease.html"
+    context_object_name = "patientdisease"
+
+
+class CreatePatientDiseaseView(CreateView):
+    form_class = PatientDiseaseForm
+    template_name = "patientdisease-create.html"
+    success_url = "patientdisease/"
+
+
+class UpdatePatientDiseaseView(UpdateView):
+    model = PatientDisease
+    form_class = PatientDiseaseForm
+    template_name = "patientdisease-update.html"
+    success_url = "patientdisease/"
+
     def get_queryset(self):
-        return Facility.objects.all()
+        return PatientDisease.objects.all()
+
+
+class DeletePatientDiseaseView(DeleteView):
+    model = PatientDisease
+    template_name = "patientdisease-delete.html"
+    success_url = "patientdisease/"
+
+
+class DetailPatientDiseaseView(DetailView):
+    model = PatientDisease
+    template_name = "patientdisease-details.html"
+
+#Visit Schedule
+class VisitScheduleForm(ModelForm):
+    class Meta:
+        model = VisitSchedule
+        fields = "__all__"
+
+
+class VisitScheduleView(ListView):
+    queryset = VisitSchedule.objects.all()
+    template_name = "visitschedule.html"
+    context_object_name = "visitschedule"
+
+
+class CreateVisitScheduleView(CreateView):
+    form_class = VisitScheduleForm
+    template_name = "visitschedule-create.html"
+    success_url = "visitschedule/"
+
+
+class UpdateVisitScheduleView(UpdateView):
+    model = VisitSchedule
+    form_class = VisitScheduleForm
+    template_name = "visitschedule-update.html"
+    success_url = "visitschedule/"
+
+    def get_queryset(self):
+        return VisitSchedule.objects.all()
+
+
+class DeleteVisitScheduleView(DeleteView):
+    model = VisitSchedule
+    template_name = "visitschedule-delete.html"
+    success_url = "visitschedule/"
+
+
+class DetailVisitScheduleView(DetailView):
+    model = VisitSchedule
+    template_name = "visitschedule-details.html"
+
+#Visit Details
+class VisitDetailsForm(ModelForm):
+    class Meta:
+        model = VisitDetails
+        fields = "__all__"
+
+
+class VisitDetailsView(ListView):
+    queryset = VisitDetails.objects.all()
+    template_name = "visitdetails.html"
+    context_object_name = "visitdetails"
+
+
+class CreateVisitDetailsView(CreateView):
+    form_class = VisitDetailsForm
+    template_name = "visitdetails-create.html"
+    success_url = "visitdetails/"
+
+
+class UpdateVisitDetailsView(UpdateView):
+    model = VisitDetails
+    form_class = VisitDetailsForm
+    template_name = "visitdetails-update.html"
+    success_url = "visitdetails/"
+
+    def get_queryset(self):
+        return VisitDetails.objects.all()
+
+
+class DeleteVisitDetailsView(DeleteView):
+    model = VisitDetails
+    template_name = "visitdetails-delete.html"
+    success_url = "visitdetails/"
+
+
+class DetailVisitDetailsView(DetailView):
+    model = VisitDetails
+    template_name = "visitdetails-details.html"
+
+#Treatment
+class TreatmentForm(ModelForm):
+    class Meta:
+        model = Treatment
+        fields = "__all__"
+
+
+class TreatmentView(ListView):
+    queryset = Treatment.objects.all()
+    template_name = "treatment.html"
+    context_object_name = "treatment"
+
+
+class CreateTreatmentView(CreateView):
+    form_class = TreatmentForm
+    template_name = "treatment-create.html"
+    success_url = "treatment/"
+
+
+class UpdateTreatmentView(UpdateView):
+    model = Treatment
+    form_class = TreatmentForm
+    template_name = "treatment-update.html"
+    success_url = "treatment/"
+
+    def get_queryset(self):
+        return Treatment.objects.all()
+
+
+class DeleteTreatmentView(DeleteView):
+    model = Treatment
+    template_name = "treatment-delete.html"
+    success_url = "treatment/"
+
+
+class DetailTreatmentView(DetailView):
+    model = Treatment
+    template_name = "treatment-details.html"
+
+#Treatment Notes
+class TreatmentNotesForm(ModelForm):
+    class Meta:
+        model = TreatmentNotes
+        fields = "__all__"
+
+
+class TreatmentNotesView(ListView):
+    queryset = TreatmentNotes.objects.all()
+    template_name = "treatmentnotes.html"
+    context_object_name = "treatmentnotes"
+
+
+class CreateTreatmentNotesView(CreateView):
+    form_class = TreatmentNotesForm
+    template_name = "treatmentnotes-create.html"
+    success_url = "treatmentnotes/"
+
+
+class UpdateTreatmentNotesView(UpdateView):
+    model = TreatmentNotes
+    form_class = TreatmentNotesForm
+    template_name = "treatmentnotes-update.html"
+    success_url = "treatmentnotes/"
+
+    def get_queryset(self):
+        return TreatmentNotes.objects.all()
+
+
+class DeleteTreatmentNotesView(DeleteView):
+    model = TreatmentNotes
+    template_name = "treatmentnotes-delete.html"
+    success_url = "treatmentnotes/"
+
+
+class DetailTreatmentNotesView(DetailView):
+    model = Treatment
+    template_name = "treatment-details.html"
