@@ -1,5 +1,7 @@
 from pyexpat import model
 from django.db import models
+import datetime
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
@@ -88,6 +90,7 @@ class AccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 class User(AbstractUser):
+    username = None
     email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(max_length=100)
     role = models.CharField(
@@ -110,7 +113,7 @@ GENDER_CHOICES = (("Male", "Male"), ("Female", "Female"), (3, "Non_Binary"))
 
 class Patient(models.Model):
     full_name = models.CharField(max_length=100)
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(default=datetime.date.today())
     address = models.CharField(max_length=255)
     landmark = models.CharField(max_length=255)
     phone = models.IntegerField()
@@ -120,7 +123,7 @@ class Patient(models.Model):
         default=GENDER_CHOICES[0][0],
     )
     emergency_phone_number = models.IntegerField()
-    expired_time = models.DateTimeField(null=True)
+    expired_time = models.DateTimeField(null=True,default = timezone.now())
     ward = models.ForeignKey("Ward", on_delete=models.PROTECT, null=True, blank=True)
 
 
@@ -184,8 +187,8 @@ class VisitSchedule(models.Model):
     date = models.DateTimeField()
     # minutes
     duration = models.IntegerField()
-    patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
-    nurse = models.ForeignKey("User", on_delete=models.PROTECT)
+    patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
+    nurse = models.ForeignKey(User, on_delete=models.PROTECT)
 
 
 PALLIVATIVE_PHASE_CHOICES = (

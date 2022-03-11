@@ -71,7 +71,7 @@ def log_in(request):
     else:
         form = UserLoginForm()
 
-    return render(request, "users/login.html", {"form": form, "error": error})
+    return render(request, "login.html", {"form": form, "error": error})
 
 
 # class UserLoginForm(AuthenticationForm):
@@ -94,20 +94,19 @@ class PatientForm(ModelForm):
         fields = "__all__"
 
 
-class PatientView(LoginRequiredMixin, ListView):
-    model = Patient
+class PatientView(ListView):
     queryset = Patient.objects.all()
     template_name = "patient.html"
     context_objects_name = "patients"
 
-    def get_queryset(self):
-        return Patient.objects.filter(nurse=self.request.user)
+    # def get_queryset(self):
+    #     return Patient.objects.filter(nurse=self.request.user)
 
 
 class CreatePatientView(CreateView):
     form_class = PatientForm
     template_name = "patient-create.html"
-    success_url = "patients/"
+    success_url = "patient/"
 
 
 class UpdatePatientView(UpdateView):
