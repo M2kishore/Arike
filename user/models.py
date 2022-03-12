@@ -9,26 +9,32 @@ from django.utils.translation import gettext_lazy as _
 
 LOCAL_BODY_CHOICES = (
     # Panchayath levels
-    (1, "Grama Panchayath"),
-    (2, "Block Panchayath"),
-    (3, "District Panchayath"),
-    (4, "Nagar Panchayath"),
+    ("1", "Grama Panchayath"),
+    ("2", "Block Panchayath"),
+    ("3", "District Panchayath"),
+    ("4", "Nagar Panchayath"),
     # Municipality levels
-    (10, "Municipality"),
+    ("10", "Municipality"),
     # Corporation levels
-    (20, "Corporation"),
+    ("20", "Corporation"),
     # Unknown
-    (50, "Others"),
+    ("50", "Others"),
 )
 
 
 class State(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class District(models.Model):
     name = models.CharField(max_length=255)
     state = models.ForeignKey("State", on_delete=models.PROTECT)
+    
+    def __str__(self):
+        return f"{self.name} {self.state}"
 
 
 class LgsBody(models.Model):
@@ -40,11 +46,17 @@ class LgsBody(models.Model):
 
     district = models.ForeignKey("District", on_delete=models.PROTECT)
 
+    def __str__(self):
+        return f"{self.name} {self.kind} {self.district}"
+
 
 class Ward(models.Model):
     name = models.CharField(max_length=100)
     number = models.IntegerField()
     lgs_body = models.ForeignKey("LgsBody", on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f"{self.name} {self.lgs_body}"
 
 
 FACILITY_KIND_CHOICES = (
@@ -64,6 +76,9 @@ class Facility(models.Model):
     pincode = models.IntegerField()
     phone = models.IntegerField()
     ward = models.ForeignKey("Ward", on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} {self.kind} {self.ward}"
 
 
 USERS_ROLE_CHOICES = (
@@ -117,7 +132,7 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     phone = models.BigIntegerField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=100,default="primarynurse")
     district = models.ForeignKey(
         District, on_delete=models.PROTECT, null=True, blank=True
     )
@@ -125,6 +140,9 @@ class User(AbstractUser):
 
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(blank=True, null=True)
+
+    isFirst = models.BooleanField(default=True)
+    last_email_sent_date = models.DateField(default=datetime.date.today, null=True)
 
     deleted = models.BooleanField(default=False)
 
@@ -154,6 +172,9 @@ class Patient(models.Model):
     emergency_phone_number = models.IntegerField()
     expired_time = models.DateTimeField(null=True, default=timezone.now())
     ward = models.ForeignKey("Ward", on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.full_name} {self.gender} {self.ward}"
 
 
 RELATION_CHOICES = (
@@ -186,6 +207,9 @@ class FamilyDetails(models.Model):
     is_primary = models.BooleanField(default=False)
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
 
+    def __str__(self):
+        return f"{self.name} {self.patient}"
+
 
 ICDS_CODE_CHOICES = (
     ("D-32", "DM"),
@@ -205,19 +229,29 @@ class Disease(models.Model):
         max_length=100, choices=ICDS_CODE_CHOICES, default=ICDS_CODE_CHOICES[0][0]
     )
 
+    def __str__(self):
+        return f"{self.name} {self.icds_code}"
+
 
 class PatientDisease(models.Model):
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
     disease = models.ForeignKey("Disease", on_delete=models.PROTECT)
     note = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.patient} {self.disease}"
+
 
 class VisitSchedule(models.Model):
-    date = models.DateTimeField()
+    date = models.DateTimeField(default=timezone.now())
     # minutes
     duration = models.IntegerField()
     patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
     nurse = models.ForeignKey(User, on_delete=models.PROTECT)
+    email_sent = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.patient} {self.nurse} {self.date}"
 
 
 PALLIVATIVE_PHASE_CHOICES = (
@@ -256,6 +290,10 @@ class VisitDetails(models.Model):
     )
     note = note = models.CharField(max_length=255)
     visit_schedule = models.ForeignKey("VisitSchedule", on_delete=models.PROTECT)
+    created_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.visit_schedule}\npallivative phase:{self.pallivative_phase}\npulse:{self.pulse}\ngeneral_random_blood_sugar:{self.general_random_blood_sugar}\npersonal hygine:{self.personal_hygine}\nmouth hygine: {self.mouth_hygine}\npublic hygine{self.public_hygine}"
 
 
 TREATMENT_CHOICES = (
@@ -274,9 +312,15 @@ class Treatment(models.Model):
     )
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
 
+    def __str__(self):
+        return f"{self.patient} {self.care_type}"
+
 
 class TreatmentNotes(models.Model):
     note = models.CharField(max_length=255)
     describe = models.CharField(max_length=255)
     visit = models.ForeignKey("VisitDetails", on_delete=models.PROTECT)
     treatment = models.ForeignKey("Treatment", on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f"{self.visit} {self.treatment}"

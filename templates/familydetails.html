@@ -2,6 +2,7 @@
 {%if not familydetails%}
 no objects
 {%endif%}
+<a href="/familydetails-create/">Create</a>
 {% for familydetail in familydetails%}
 {{forloop.counter}}
 {{familydetail}} <a href="/familydetail-delete/{{familydetail.id}}">remove</a> <a

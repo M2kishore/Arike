@@ -128,3 +128,6 @@ LOGIN_URL = "/login"
 LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = 'user.User'
+
+BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

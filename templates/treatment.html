@@ -2,6 +2,7 @@
 {%if not treatments%}
 no objects
 {%endif%}
+<a href="/treatment-create/">Create</a>
 {% for treatment in treatments%}
 {{forloop.counter}}
 {{treatment}} <a href="/treatment-delete/{{treatment.id}}">remove</a> <a

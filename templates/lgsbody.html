@@ -2,6 +2,7 @@
 {%if not lgsbodys%}
 no objects
 {%endif%}
+<a href="/lgsbody-create/">Create</a>
 {% for lgsbody in lgsbodies%}
 {{forloop.counter}}
 {{lgsbody}} <a href="/lgsbody-delete/{{lgsbody.id}}">remove</a> <a href="/lgsbody-update/{{lgsbody.id}}">update</a> <a

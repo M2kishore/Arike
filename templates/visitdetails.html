@@ -2,6 +2,7 @@
 {%if not visitdetailss%}
 no objects
 {%endif%}
+<a href="/visitdetails-create/">Create</a>
 {% for visitdetails in visitdetailss%}
 {{forloop.counter}}
 {{visitdetails}} <a href="/visitdetails-delete/{{visitdetails.id}}">remove</a> <a

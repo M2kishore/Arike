@@ -2,6 +2,12 @@
 {%if not facilitys%}
 no objects
 {%endif%}
+<h2>Search</h2>
+<form action="" method="get">
+    <input type="text" name="search" />
+    <button type="submit">Search</button>
+</form>
+<a href="/facility-create/">Create</a>
 {% for facility in facilities%}
 {{forloop.counter}}
 {{facility}} <a href="/facility-delete/{{facility.id}}">remove</a> <a href="/facility-update/{{facility.id}}">update</a>

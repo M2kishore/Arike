@@ -2,6 +2,7 @@
 {%if not patientdiseases%}
 no objects
 {%endif%}
+<a href="/patientdisease-create/">Create</a>
 {% for patientdisease in patientdiseases%}
 {{forloop.counter}}
 {{patientdisease}} <a href="/patientdisease-delete/{{patientdisease.id}}">remove</a> <a

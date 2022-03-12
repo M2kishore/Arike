@@ -5,6 +5,7 @@ from django.forms import EmailField, ModelForm, TextInput, CharField, PasswordIn
 from django.http import HttpResponseRedirect, QueryDict
 from django.shortcuts import redirect, render
 from django.views import View
+from user.user import user_created_email
 from user.models import (
     Disease,
     District,
@@ -51,6 +52,11 @@ class UserCreateView(CreateView):
     form_class = UserCreateForm
     template_name = "signup.html"
     success_url = "login"
+
+    def form_valid(self, form):
+        self.object = form.save()
+        user_created_email(self.object).delay()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UserLoginForm(forms.Form):
@@ -104,8 +110,13 @@ class PatientView(ListView):
     template_name = "patient.html"
     context_objects_name = "patients"
 
-    # def get_queryset(self):
-    #     return Patient.objects.filter(nurse=self.request.user)
+    def get_queryset(self):
+        print(self.request.user)
+        patients = Patient.objects.filter()
+        search_string = self.request.GET.get("search")
+        if search_string:
+            patients = Patient.filter(full_name__icontains=search_string)
+        return patients
 
 
 class CreatePatientView(CreateView):

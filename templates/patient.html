@@ -2,6 +2,12 @@
 {%if not patients%}
 no objects
 {%endif%}
+<h2>Search</h2>
+<form action="" method="get">
+    <input type="text" name="search" />
+    <button type="submit">Search</button>
+</form>
+<a href="/patient-create/">create</a>
 {% for patient in patients%}
 {{forloop.counter}}
 {{patient}} <a href="/patient-delete/{{patient.id}}">remove</a> <a href="/patient-update/{{patient.id}}">update</a> <a
