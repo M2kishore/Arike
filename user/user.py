@@ -12,11 +12,6 @@ from celery.decorators import periodic_task
 
 from Arike.celery import app
 
-@periodic_task(run_every=timedelta(seconds=30))
-def every_30_seconds():
-    print("Running Every 30 Seconds!")
-    return True
-
 def user_created_email(user):
     try:
         send_mail(
@@ -29,7 +24,12 @@ def user_created_email(user):
     except:
         user.isFirst = True
     user.save()
-    
+
+@periodic_task(run_every=timedelta(seconds=30))
+def every_30_seconds():
+    print("Running Every 30 Seconds!")
+    return True
+
 @periodic_task(run_every=timedelta(seconds=30))
 def daily_report_email():
     now_time = datetime.datetime.now()
