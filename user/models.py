@@ -32,7 +32,7 @@ class State(models.Model):
 class District(models.Model):
     name = models.CharField(max_length=255)
     state = models.ForeignKey("State", on_delete=models.PROTECT)
-    
+
     def __str__(self):
         return f"{self.name} {self.state}"
 
@@ -132,7 +132,7 @@ class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     phone = models.BigIntegerField(null=True, blank=True)
     is_verified = models.BooleanField(default=False)
-    password = models.CharField(max_length=100,default="primarynurse")
+    password = models.CharField(max_length=100, default="primarynurse")
     district = models.ForeignKey(
         District, on_delete=models.PROTECT, null=True, blank=True
     )
@@ -208,7 +208,7 @@ class FamilyDetails(models.Model):
     patient = models.ForeignKey("Patient", on_delete=models.PROTECT)
 
     def __str__(self):
-        return f"{self.name} {self.patient}"
+        return f"{self.full_name} {self.patient}"
 
 
 ICDS_CODE_CHOICES = (

@@ -376,7 +376,7 @@ class FamilyDetailsForm(ModelForm):
 class FamilyDetailsView(ListView):
     queryset = FamilyDetails.objects.all()
     template_name = "familydetails.html"
-    context_object_name = "facilities"
+    context_object_name = "familydetails"
 
 
 class CreateFamilyDetailsView(CreateView):
@@ -499,7 +499,7 @@ class VisitScheduleForm(ModelForm):
 class VisitScheduleView(ListView):
     queryset = VisitSchedule.objects.all()
     template_name = "visitschedule.html"
-    context_object_name = "visitschedule"
+    context_object_name = "visitschedules"
 
 
 class CreateVisitScheduleView(CreateView):
@@ -579,7 +579,7 @@ class TreatmentForm(ModelForm):
 class TreatmentView(ListView):
     queryset = Treatment.objects.all()
     template_name = "treatment.html"
-    context_object_name = "treatment"
+    context_object_name = "treatments"
 
 
 class CreateTreatmentView(CreateView):
