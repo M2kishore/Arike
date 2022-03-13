@@ -1,10 +1,8 @@
 <h1>treatment</h1>
-{%if not treatments%}
-no objects
-{%endif%}
-<a href="/treatment-create/">Create</a>
-{% for treatment in treatments%}
-{{forloop.counter}}
-{{treatment}} <a href="/treatment-delete/{{treatment.id}}">remove</a> <a
-    href="/treatment-update/{{treatment.id}}">update</a> <a href="/treatment-detail/{{treatment.id}}">details</a><br />
+{%if not treatments%} no objects {%endif%}
+<a href="/treatment-create/">Create</a><br />
+{% for treatment in treatments%} {{forloop.counter}} {{treatment}}
+<a href="/treatment-delete/{{treatment.id}}">remove</a>
+<a href="/treatment-update/{{treatment.id}}">update</a>
+<a href="/treatment-detail/{{treatment.id}}">details</a><br />
 {% endfor %}

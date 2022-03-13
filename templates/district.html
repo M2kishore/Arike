@@ -1,10 +1,8 @@
 <h1>District</h1>
-{%if not districts%}
-no objects
-{%endif%}
-<a href="/district-create/">Create</a>
-{% for district in districts%}
-{{forloop.counter}}
-{{district}} <a href="/district-delete/{{district.id}}">remove</a> <a href="/district-update/{{district.id}}">update</a>
+{%if not districts%} no objects {%endif%}
+<a href="/district-create/">Create</a><br />
+{% for district in districts%} {{forloop.counter}} {{district}}
+<a href="/district-delete/{{district.id}}">remove</a>
+<a href="/district-update/{{district.id}}">update</a>
 <a href="/district-detail/{{district.id}}">details</a><br />
 {% endfor %}

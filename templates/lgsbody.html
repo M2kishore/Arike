@@ -1,10 +1,8 @@
 <h1>LGS Body</h1>
-{%if not lgsbodys%}
-no objects
-{%endif%}
-<a href="/lgsbody-create/">Create</a>
-{% for lgsbody in lgsbodies%}
-{{forloop.counter}}
-{{lgsbody}} <a href="/lgsbody-delete/{{lgsbody.id}}">remove</a> <a href="/lgsbody-update/{{lgsbody.id}}">update</a> <a
-    href="/lgsbody-detail/{{lgsbody.id}}">details</a><br />
+{%if not lgsbodys%} no objects {%endif%}
+<a href="/lgsbody-create/">Create</a><br />
+{% for lgsbody in lgsbodies%} {{forloop.counter}} {{lgsbody}}
+<a href="/lgsbody-delete/{{lgsbody.id}}">remove</a>
+<a href="/lgsbody-update/{{lgsbody.id}}">update</a>
+<a href="/lgsbody-detail/{{lgsbody.id}}">details</a><br />
 {% endfor %}

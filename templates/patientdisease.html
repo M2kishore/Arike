@@ -1,11 +1,9 @@
 <h1>patientdisease</h1>
-{%if not patientdiseases%}
-no objects
-{%endif%}
-<a href="/patientdisease-create/">Create</a>
-{% for patientdisease in patientdiseases%}
-{{forloop.counter}}
-{{patientdisease}} <a href="/patientdisease-delete/{{patientdisease.id}}">remove</a> <a
-    href="/patientdisease-update/{{patientdisease.id}}">update</a> <a
-    href="/patientdisease-detail/{{patientdisease.id}}">details</a><br />
+{%if not patientdiseases%} no objects {%endif%}
+<a href="/patientdisease-create/">Create</a><br />
+{% for patientdisease in patientdiseases%} {{forloop.counter}}
+{{patientdisease}}
+<a href="/patientdisease-delete/{{patientdisease.id}}">remove</a>
+<a href="/patientdisease-update/{{patientdisease.id}}">update</a>
+<a href="/patientdisease-detail/{{patientdisease.id}}">details</a><br />
 {% endfor %}

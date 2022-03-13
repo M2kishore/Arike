@@ -1,15 +1,13 @@
 <h1>Facility</h1>
-{%if not facilitys%}
-no objects
-{%endif%}
+{%if not facilitys%} no objects {%endif%}
 <h2>Search</h2>
 <form action="" method="get">
-    <input type="text" name="search" />
-    <button type="submit">Search</button>
+  <input type="text" name="search" />
+  <button type="submit">Search</button>
 </form>
-<a href="/facility-create/">Create</a>
-{% for facility in facilities%}
-{{forloop.counter}}
-{{facility}} <a href="/facility-delete/{{facility.id}}">remove</a> <a href="/facility-update/{{facility.id}}">update</a>
+<a href="/facility-create/">Create</a><br />
+{% for facility in facilities%} {{forloop.counter}} {{facility}}
+<a href="/facility-delete/{{facility.id}}">remove</a>
+<a href="/facility-update/{{facility.id}}">update</a>
 <a href="/facility-detail/{{facility.id}}">details</a><br />
 {% endfor %}

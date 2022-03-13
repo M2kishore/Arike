@@ -1,10 +1,8 @@
 <h1>States</h1>
-{%if not states%}
-no objects
-{%endif%}
-<a href="/state-create/">Create</a>
-{% for state in states%}
-{{forloop.counter}}
-{{state}} <a href="/state-delete/{{state.id}}">remove</a> <a href="/state-update/{{state.id}}">update</a> <a
-    href="/state-detail/{{state.id}}">details</a><br />
+{%if not states%} no objects {%endif%}
+<a href="/state-create/">Create</a><br />
+{% for state in states%} {{forloop.counter}} {{state}}
+<a href="/state-delete/{{state.id}}">remove</a>
+<a href="/state-update/{{state.id}}">update</a>
+<a href="/state-detail/{{state.id}}">details</a><br />
 {% endfor %}

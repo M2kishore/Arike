@@ -1,11 +1,8 @@
 <h1>Visit Details</h1>
-{%if not visitdetailss%}
-no objects
-{%endif%}
-<a href="/visitdetails-create/">Create</a>
-{% for visitdetails in visitdetailss%}
-{{forloop.counter}}
-{{visitdetails}} <a href="/visitdetails-delete/{{visitdetails.id}}">remove</a> <a
-    href="/visitdetails-update/{{visitdetails.id}}">update</a> <a
-    href="/visitdetails-detail/{{visitdetails.id}}">details</a><br />
+{%if not visitdetailss%} no objects {%endif%}
+<a href="/visitdetails-create/">Create</a><br />
+{% for visitdetails in visitdetailss%} {{forloop.counter}} {{visitdetails}}
+<a href="/visitdetails-delete/{{visitdetails.id}}">remove</a>
+<a href="/visitdetails-update/{{visitdetails.id}}">update</a>
+<a href="/visitdetails-detail/{{visitdetails.id}}">details</a><br />
 {% endfor %}

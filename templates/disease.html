@@ -1,10 +1,8 @@
 <h1>Diseases</h1>
-{%if not diseases%}
-no objects
-{%endif%}
-<a href="/disease-create/">Create</a>
-{% for disease in diseases%}
-{{forloop.counter}}
-{{disease}} <a href="/disease-delete/{{disease.id}}">remove</a> <a href="/disease-update/{{disease.id}}">update</a> <a
-    href="/disease-detail/{{disease.id}}">details</a><br />
+{%if not diseases%} no objects {%endif%}
+<a href="/disease-create/">Create</a><br />
+{% for disease in diseases%} {{forloop.counter}} {{disease}}
+<a href="/disease-delete/{{disease.id}}">remove</a>
+<a href="/disease-update/{{disease.id}}">update</a>
+<a href="/disease-detail/{{disease.id}}">details</a><br />
 {% endfor %}
