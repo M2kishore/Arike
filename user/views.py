@@ -1,3 +1,4 @@
+import email
 from django.views.generic.list import ListView
 from re import template
 from sre_constants import SUCCESS
@@ -51,11 +52,11 @@ class UserCreateForm(UserCreationForm):
 class UserCreateView(CreateView):
     form_class = UserCreateForm
     template_name = "signup.html"
-    success_url = "login"
+    success_url = "/login"
 
     def form_valid(self, form):
         self.object = form.save()
-        user_created_email(self.object).delay()
+        user_created_email(self.object)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -112,24 +113,34 @@ class PatientView(ListView):
 
     def get_queryset(self):
         print(self.request.user)
-        patients = Patient.objects.filter()
+        patients = Patient.objects.all()
+        user_object = User.objects.get(email=self.request.user)
+        if user_object.role == 'secondary_nurse':
+            patients = patients.filter(nurse=user_object)
         search_string = self.request.GET.get("search")
         if search_string:
-            patients = Patient.filter(full_name__icontains=search_string)
+            patients = Patient.objects.filter(full_name__icontains=search_string)
         return patients
+    
+    def get_context_data(self, **kwargs):
+        context = super(PatientView, self).get_context_data(**kwargs)
+        context.update({
+             "role": User.objects.get(email=self.request.user).role,
+        })
+        return context
 
 
 class CreatePatientView(CreateView):
     form_class = PatientForm
     template_name = "patient-create.html"
-    success_url = "patient/"
+    success_url = "/patient/"
 
 
 class UpdatePatientView(UpdateView):
     model = Patient
     form_class = PatientForm
     template_name = "patient-update.html"
-    success_url = "patients/"
+    success_url = "/patient/"
 
     def get_queryset(self):
         return Patient.objects.filter(deleted=False, nurse=self.request.user)
@@ -138,7 +149,7 @@ class UpdatePatientView(UpdateView):
 class DeletePatientView(DeleteView):
     model = Patient
     template_name = "patient-delete.html"
-    success_url = "patients/"
+    success_url = "/patient/"
 
 
 class DetailPatientView(DetailView):
@@ -165,14 +176,14 @@ class StateView(ListView):
 class CreateStateView(CreateView):
     form_class = StateForm
     template_name = "state-create.html"
-    success_url = "state/"
+    success_url = "/state/"
 
 
 class UpdateStateView(UpdateView):
     model = State
     form_class = StateForm
     template_name = "state-update.html"
-    success_url = "state/"
+    success_url = "/state/"
 
     def get_queryset(self):
         return State.objects.all()
@@ -181,7 +192,7 @@ class UpdateStateView(UpdateView):
 class DeleteStateView(DeleteView):
     model = State
     template_name = "state-delete.html"
-    success_url = "state/"
+    success_url = "/state/"
 
 
 class DetailStateView(DetailView):
@@ -208,14 +219,14 @@ class DistrictView(ListView):
 class CreateDistrictView(CreateView):
     form_class = DistrictForm
     template_name = "district-create.html"
-    success_url = "district/"
+    success_url = "/district/"
 
 
 class UpdateDistrictView(UpdateView):
     model = District
     form_class = DistrictForm
     template_name = "district-update.html"
-    success_url = "district/"
+    success_url = "/district/"
 
     def get_queryset(self):
         return District.objects.all()
@@ -224,7 +235,7 @@ class UpdateDistrictView(UpdateView):
 class DeleteDistrictView(DeleteView):
     model = District
     template_name = "district-delete.html"
-    success_url = "district/"
+    success_url = "/district/"
 
 
 class DetailDistrictView(DetailView):
@@ -251,14 +262,14 @@ class LgsBodyView(ListView):
 class CreateLgsBodyView(CreateView):
     form_class = LgsBodyForm
     template_name = "lgsbody-create.html"
-    success_url = "lgsbody/"
+    success_url = "/lgsbody/"
 
 
 class UpdateLgsBodyView(UpdateView):
     model = LgsBody
     form_class = LgsBodyForm
     template_name = "lgsbody-update.html"
-    success_url = "lgsbody/"
+    success_url = "/lgsbody/"
 
     def get_queryset(self):
         return LgsBody.objects.all()
@@ -267,7 +278,7 @@ class UpdateLgsBodyView(UpdateView):
 class DeleteLgsBodyView(DeleteView):
     model = LgsBody
     template_name = "lgsbody-delete.html"
-    success_url = "lgsbody/"
+    success_url = "/lgsbody/"
 
 
 class DetailLgsBodyView(DetailView):
@@ -287,21 +298,21 @@ class WardForm(ModelForm):
 
 class WardView(ListView):
     queryset = Ward.objects.all()
-    template_name = "lgsbody.html"
-    context_object_name = "lgsbodys"
+    template_name = "ward.html"
+    context_object_name = "wards"
 
 
 class CreateWardView(CreateView):
     form_class = WardForm
-    template_name = "lgsbody-create.html"
-    success_url = "lgsbody/"
+    template_name = "ward-create.html"
+    success_url = "/ward/"
 
 
 class UpdateWardView(UpdateView):
     model = Ward
     form_class = WardForm
     template_name = "ward-update.html"
-    success_url = "ward/"
+    success_url = "/ward/"
 
     def get_queryset(self):
         return Ward.objects.all()
@@ -310,7 +321,7 @@ class UpdateWardView(UpdateView):
 class DeleteWardView(DeleteView):
     model = Ward
     template_name = "ward-delete.html"
-    success_url = "ward/"
+    success_url = "/ward/"
 
 
 class DetailWardView(DetailView):
@@ -337,14 +348,14 @@ class FacilityView(ListView):
 class CreateFacilityView(CreateView):
     form_class = FacilityForm
     template_name = "facility-create.html"
-    success_url = "facility/"
+    success_url = "/facility/"
 
 
 class UpdateFacilityView(UpdateView):
     model = Facility
     form_class = FacilityForm
     template_name = "facility-update.html"
-    success_url = "facility/"
+    success_url = "/facility/"
 
     def get_queryset(self):
         return Facility.objects.all()
@@ -353,7 +364,7 @@ class UpdateFacilityView(UpdateView):
 class DeleteFacilityView(DeleteView):
     model = Facility
     template_name = "facility-delete.html"
-    success_url = "facility/"
+    success_url = "/facility/"
 
 
 class DetailFacilityView(DetailView):
@@ -380,14 +391,14 @@ class FamilyDetailsView(ListView):
 class CreateFamilyDetailsView(CreateView):
     form_class = FamilyDetailsForm
     template_name = "familydetails-create.html"
-    success_url = "familydetails/"
+    success_url = "/familydetails/"
 
 
 class UpdateFamilyDetailsView(UpdateView):
     model = FamilyDetails
     form_class = FamilyDetailsForm
     template_name = "familydetails-update.html"
-    success_url = "familydetails/"
+    success_url = "/familydetails/"
 
     def get_queryset(self):
         return FamilyDetails.objects.all()
@@ -396,7 +407,7 @@ class UpdateFamilyDetailsView(UpdateView):
 class DeleteFamilyDetailsView(DeleteView):
     model = FamilyDetails
     template_name = "familydetails-delete.html"
-    success_url = "familydetails/"
+    success_url = "/familydetails/"
 
 
 class DetailFamilyDetailsView(DetailView):
@@ -423,14 +434,14 @@ class DiseaseView(ListView):
 class CreateDiseaseView(CreateView):
     form_class = DiseaseForm
     template_name = "disease-create.html"
-    success_url = "disease/"
+    success_url = "/disease/"
 
 
 class UpdateDiseaseView(UpdateView):
     model = Disease
     form_class = DiseaseForm
     template_name = "disease-update.html"
-    success_url = "disease/"
+    success_url = "/disease/"
 
     def get_queryset(self):
         return Disease.objects.all()
@@ -439,7 +450,7 @@ class UpdateDiseaseView(UpdateView):
 class DeleteDiseaseView(DeleteView):
     model = Disease
     template_name = "disease-delete.html"
-    success_url = "disease/"
+    success_url = "/disease/"
 
 
 class DetailDiseaseView(DetailView):
@@ -462,14 +473,14 @@ class PatientDiseaseView(ListView):
 class CreatePatientDiseaseView(CreateView):
     form_class = PatientDiseaseForm
     template_name = "patientdisease-create.html"
-    success_url = "patientdisease/"
+    success_url = "/patientdisease/"
 
 
 class UpdatePatientDiseaseView(UpdateView):
     model = PatientDisease
     form_class = PatientDiseaseForm
     template_name = "patientdisease-update.html"
-    success_url = "patientdisease/"
+    success_url = "/patientdisease/"
 
     def get_queryset(self):
         return PatientDisease.objects.all()
@@ -478,7 +489,7 @@ class UpdatePatientDiseaseView(UpdateView):
 class DeletePatientDiseaseView(DeleteView):
     model = PatientDisease
     template_name = "patientdisease-delete.html"
-    success_url = "patientdisease/"
+    success_url = "/patientdisease/"
 
 
 class DetailPatientDiseaseView(DetailView):
@@ -501,14 +512,14 @@ class VisitScheduleView(ListView):
 class CreateVisitScheduleView(CreateView):
     form_class = VisitScheduleForm
     template_name = "visitschedule-create.html"
-    success_url = "visitschedule/"
+    success_url = "/visitschedule/"
 
 
 class UpdateVisitScheduleView(UpdateView):
     model = VisitSchedule
     form_class = VisitScheduleForm
     template_name = "visitschedule-update.html"
-    success_url = "visitschedule/"
+    success_url = "/visitschedule/"
 
     def get_queryset(self):
         return VisitSchedule.objects.all()
@@ -517,7 +528,7 @@ class UpdateVisitScheduleView(UpdateView):
 class DeleteVisitScheduleView(DeleteView):
     model = VisitSchedule
     template_name = "visitschedule-delete.html"
-    success_url = "visitschedule/"
+    success_url = "/visitschedule/"
 
 
 class DetailVisitScheduleView(DetailView):
@@ -540,14 +551,14 @@ class VisitDetailsView(ListView):
 class CreateVisitDetailsView(CreateView):
     form_class = VisitDetailsForm
     template_name = "visitdetails-create.html"
-    success_url = "visitdetails/"
+    success_url = "/visitdetails/"
 
 
 class UpdateVisitDetailsView(UpdateView):
     model = VisitDetails
     form_class = VisitDetailsForm
     template_name = "visitdetails-update.html"
-    success_url = "visitdetails/"
+    success_url = "/visitdetails/"
 
     def get_queryset(self):
         return VisitDetails.objects.all()
@@ -556,7 +567,7 @@ class UpdateVisitDetailsView(UpdateView):
 class DeleteVisitDetailsView(DeleteView):
     model = VisitDetails
     template_name = "visitdetails-delete.html"
-    success_url = "visitdetails/"
+    success_url = "/visitdetails/"
 
 
 class DetailVisitDetailsView(DetailView):
@@ -579,14 +590,14 @@ class TreatmentView(ListView):
 class CreateTreatmentView(CreateView):
     form_class = TreatmentForm
     template_name = "treatment-create.html"
-    success_url = "treatment/"
+    success_url = "/treatment/"
 
 
 class UpdateTreatmentView(UpdateView):
     model = Treatment
     form_class = TreatmentForm
     template_name = "treatment-update.html"
-    success_url = "treatment/"
+    success_url = "/treatment/"
 
     def get_queryset(self):
         return Treatment.objects.all()
@@ -595,7 +606,7 @@ class UpdateTreatmentView(UpdateView):
 class DeleteTreatmentView(DeleteView):
     model = Treatment
     template_name = "treatment-delete.html"
-    success_url = "treatment/"
+    success_url = "/treatment/"
 
 
 class DetailTreatmentView(DetailView):
@@ -618,14 +629,14 @@ class TreatmentNotesView(ListView):
 class CreateTreatmentNotesView(CreateView):
     form_class = TreatmentNotesForm
     template_name = "treatmentnotes-create.html"
-    success_url = "treatmentnotes/"
+    success_url = "/treatmentnotes/"
 
 
 class UpdateTreatmentNotesView(UpdateView):
     model = TreatmentNotes
     form_class = TreatmentNotesForm
     template_name = "treatmentnotes-update.html"
-    success_url = "treatmentnotes/"
+    success_url = "/treatmentnotes/"
 
     def get_queryset(self):
         return TreatmentNotes.objects.all()
@@ -634,7 +645,7 @@ class UpdateTreatmentNotesView(UpdateView):
 class DeleteTreatmentNotesView(DeleteView):
     model = TreatmentNotes
     template_name = "treatmentnotes-delete.html"
-    success_url = "treatmentnotes/"
+    success_url = "/treatmentnotes/"
 
 
 class DetailTreatmentNotesView(DetailView):

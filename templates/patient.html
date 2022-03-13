@@ -7,7 +7,7 @@ no objects
     <input type="text" name="search" />
     <button type="submit">Search</button>
 </form>
-<a href="/patient-create/">create</a>
+<a href="/patient-create/">create</a><br>
 {% for patient in patients%}
 {{forloop.counter}}
 {{patient}} <a href="/patient-delete/{{patient.id}}">remove</a> <a href="/patient-update/{{patient.id}}">update</a> <a

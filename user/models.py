@@ -152,7 +152,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.full_name} : {self.role}"
+        return f"{self.email}"
 
 
 GENDER_CHOICES = (("Male", "Male"), ("Female", "Female"), (3, "Non_Binary"))

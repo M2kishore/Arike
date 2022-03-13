@@ -99,7 +99,7 @@ urlpatterns = [
     path("patient-update/<pk>",UpdatePatientView.as_view()),
     path("patient-detail/<pk>",DetailPatientView.as_view()),
     path("state/", StateView.as_view()),
-    path("state-create",CreateStateView.as_view()),
+    path("state-create/",CreateStateView.as_view()),
     path("state-delete/<pk>",DeleteStateView.as_view()),
     path("state-update/<pk>",UpdateStateView.as_view()),
     path("state-detail/<pk>",DetailStateView.as_view()),
