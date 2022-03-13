@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-*8*=+3!5y=daw#1()r*z&*)*d2yw#0s-3-za(5e-)x$c^2w74t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["m2kishore-arike.herokuapp.com"]
 
 
 # Application definition
@@ -127,7 +127,7 @@ LOGIN_REDIRECT_URL = "/dashboard"
 LOGIN_URL = "/login"
 LOGOUT_REDIRECT_URL = "/"
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = "user.User"
 
 BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
