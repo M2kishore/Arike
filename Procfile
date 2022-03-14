@@ -1,1 +1,1 @@
-web: gunicorn Arike.wsgi
+web: gunicorn arike.wsgi
